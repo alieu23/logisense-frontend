@@ -95,7 +95,7 @@ export default function Admin() {
 
       {/* Page header */}
       <div className="mb-6">
-        <h1 className="text-xl font-medium text-gray-900">Admin Dashboard Testing (CI/CD)</h1>
+        <h1 className="text-xl font-medium text-gray-900">Admin Dashboard Testing</h1>
         <p className="text-sm text-gray-500 mt-0.5">Overview of all sentiment records across users</p>
       </div>
 
