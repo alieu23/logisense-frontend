@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import AddReview from "../components/AddReview";
 import { fetchResults } from "../api/results";
 
 const SENTIMENT_STYLES = {
@@ -15,7 +16,6 @@ export default function Home() {
   const [loading, setLoading]   = useState(true);
   const [page, setPage]         = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
-  const [form, setForm]         = useState({ text: "", sentiment: "positive" });
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -63,11 +63,6 @@ export default function Home() {
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    setForm({ text: "", sentiment: "positive" });
   };
 
   return (
@@ -126,7 +121,6 @@ export default function Home() {
               </svg>
             </div>
             <p className="text-sm font-medium text-gray-700">No results yet</p>
-            <p className="text-xs text-gray-400 mt-1">Click "Add entry" to submit your first entry</p>
           </div>
         )}
 
@@ -152,7 +146,7 @@ export default function Home() {
                         </span>
                       </td>
                       <td className="px-5 py-4 text-sm text-gray-400">
-                        {new Date(item.createdAt).toLocaleString()}
+                        {new Date(item.timestamp).toLocaleString()}
                       </td>
                     </tr>
                   ))}
@@ -170,7 +164,7 @@ export default function Home() {
                       {item.sentiment}
                     </span>
                     <span className="text-xs text-gray-400">
-                      {new Date(item.createdAt).toLocaleString()}
+                      {new Date(item.timestamp).toLocaleString()}
                     </span>
                   </div>
                 </div>
@@ -236,83 +230,16 @@ export default function Home() {
         )}
       </div>
 
+  
+    
       {/* Modal */}
-      {modalOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-40 flex items-center justify-center px-4"
-          onClick={closeModal}
-        >
-          <div
-            className="bg-white rounded-2xl border border-gray-200 w-full max-w-md p-6 z-50"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal header */}
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-base font-medium text-gray-900">Add entry</h2>
-                <p className="text-xs text-gray-400 mt-0.5">Submit a new text for sentiment analysis</p>
-              </div>
-              <button
-                onClick={closeModal}
-                className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 transition"
-              >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 6L6 18M6 6l12 12"/>
-                </svg>
-              </button>
-            </div>
 
-            {/* Fields */}
-            <div className="flex flex-col gap-4 mb-6">
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1.5">Text</label>
-                <textarea
-                  rows={4}
-                  placeholder="Enter text to analyse..."
-                  value={form.text}
-                  onChange={(e) => setForm((f) => ({ ...f, text: e.target.value }))}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/15 transition resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1.5">Sentiment</label>
-                <select
-                  value={form.sentiment}
-                  onChange={(e) => setForm((f) => ({ ...f, sentiment: e.target.value }))}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/15 transition"
-                >
-                  <option value="positive">Positive</option>
-                  <option value="negative">Negative</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="flex items-center justify-end gap-3">
-              <button
-                onClick={closeModal}
-                className="px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 rounded-lg transition"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSubmit}
-                disabled={submitting || !form.text.trim()}
-                className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-medium px-4 py-2 rounded-lg transition"
-              >
-                {submitting && (
-                  <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-                  </svg>
-                )}
-                {submitting ? "Saving..." : "Save entry"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AddReview
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmit={handleSubmit}
+        submitting={submitting}
+      />
 
     </Layout>
   );
