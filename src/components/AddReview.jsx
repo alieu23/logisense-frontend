@@ -1,12 +1,16 @@
-export default function AddReview({open, onClose, onSubmit}) {
-    if (!open) return null;
+export default function AddEntryModal({ open, onClose, onSubmit }) {
+  if (!open) return null;
 
-    return(
-        <div className="fixed insert-0 bg-black/30 z-40 flex items-center justify-center px-4 " onClick={onClose}>
-             <div
+  return (
+    <div
+      className="fixed inset-0 bg-black/30 z-40 flex items-center justify-center px-4"
+      onClick={onClose}
+    >
+      <div
         className="bg-white rounded-2xl border border-gray-200 w-full max-w-md p-6 z-50"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-base font-medium text-gray-900">Add entry</h2>
@@ -22,7 +26,8 @@ export default function AddReview({open, onClose, onSubmit}) {
           </button>
         </div>
 
-                <form
+        {/* Form */}
+        <form
           onSubmit={(e) => {
             e.preventDefault();
             const fd = new FormData(e.target);
@@ -41,7 +46,7 @@ export default function AddReview({open, onClose, onSubmit}) {
               />
             </div>
 
- {/*            <div>
+         {/*    <div>
               <label className="block text-xs font-medium text-gray-500 mb-1.5">Sentiment</label>
               <select
                 name="sentiment"
@@ -68,12 +73,11 @@ export default function AddReview({open, onClose, onSubmit}) {
               type="submit"
               className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 active:scale-[0.98] text-white text-sm font-medium px-4 py-2 rounded-lg transition"
             >
-              Save entry
+              Submit Review
             </button>
           </div>
         </form>
-
       </div>
-        </div>
-    )
+    </div>
+  );
 }
